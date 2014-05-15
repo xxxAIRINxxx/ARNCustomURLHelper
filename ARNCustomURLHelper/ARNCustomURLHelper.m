@@ -14,13 +14,6 @@
 
 @implementation ARNCustomURLHelper
 
-+ (NSURL *)urlWithString:(NSString *)aString
-{
-    if (!aString) { nil; }
-    
-    return [NSURL URLWithString:[[self class] escapeString:aString]];
-}
-
 + (void)openCustomURLSchemeWithURL:(NSURL *)aURL failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
 {
     if (![[UIApplication sharedApplication] canOpenURL:aURL]) {
@@ -46,7 +39,7 @@
 
 + (void)callPhoneForNumber:(NSString *)phoneNumber failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
 {
-    [[self class] openCustomURLSchemeWithURL:[[self class] urlWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber]] failureBlock:failureBlock];
+    [[self class] openCustomURLSchemeWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber]] failureBlock:failureBlock];
 }
 
 + (void)sendEMailForSubject:(NSString *)subject body:(NSString *)body address:(NSString *)address failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
@@ -56,14 +49,14 @@
         [mString appendString:address];
     }
     if (subject) {
-        [mString appendFormat:@"?subject=%@", subject];
+        [mString appendFormat:@"?subject=%@", [[self class] escapeString:subject]];
     } else {
         [mString appendFormat:@"?subject="];
     }
     if (body) {
-        [mString appendFormat:@"&body==%@", body];
+        [mString appendFormat:@"&body==%@", [[self class] escapeString:body]];
     }
-    [[self class] openCustomURLSchemeWithURL:[[self class] urlWithString:[NSString stringWithFormat:@"mailto:%@", mString]] failureBlock:failureBlock];
+    [[self class] openCustomURLSchemeWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@", mString]] failureBlock:failureBlock];
 }
 
 // -----------------------------------------------------------------------------------------------------------------------//
@@ -71,14 +64,13 @@
 
 + (void)sendLineForText:(NSString *)testString failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
 {
-    [[self class] openCustomURLSchemeWithURL:[[self class] urlWithString:[NSString stringWithFormat:@"line://msg/text/%@", testString]] failureBlock:failureBlock];
+    [[self class] openCustomURLSchemeWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"line://msg/text/%@", [[self class] escapeString:testString]]] failureBlock:failureBlock];
 }
 
 + (void)sendLineForImage:(UIImage *)image failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
 {
     [[UIPasteboard generalPasteboard] setData:UIImageJPEGRepresentation(image, 0.8) forPasteboardType:@"public.jpeg"];
-    [[self class] openCustomURLSchemeWithURL:[[self class] urlWithString:[NSString stringWithFormat:@"line://msg/image/%@", [UIPasteboard generalPasteboard].name]] failureBlock:failureBlock];
+    [[self class] openCustomURLSchemeWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"line://msg/image/%@", [UIPasteboard generalPasteboard].name]] failureBlock:failureBlock];
 }
-
 
 @end
