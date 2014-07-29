@@ -8,5 +8,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/xxxAIRINxxx/ARNCustomURLHelper.git", :tag => "#{s.version}" }
   s.platform     = :ios, '7.0'
   s.requires_arc = true
+  s.frameworks   = 'MessageUI'
   s.source_files = 'ARNCustomURLHelper/*.{h,m}'
 end

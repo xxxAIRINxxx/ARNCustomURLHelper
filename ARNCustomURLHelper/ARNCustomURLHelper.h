@@ -16,8 +16,16 @@ typedef void (^ARNCustomURLHelperFailureBlock)();
 // Basic
 + (void)callPhoneForNumber:(NSString *)phoneNumber failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock;
 
-+ (void)sendEMailForSubject:(NSString *)subject body:(NSString *)body address:(NSString *)address failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock;
++ (void)sendEMailForSubject:(NSString *)subject
+                       body:(NSString *)body
+                    address:(NSString *)address
+               failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock;
 
+- (void)modalEMailForSubject:(NSString *)subject
+                        body:(NSString *)body
+                     address:(NSString *)address
+                       owner:(UIViewController *)owner
+                failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock;
 
 // Line
 + (void)sendLineForText:(NSString *)testString failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock;

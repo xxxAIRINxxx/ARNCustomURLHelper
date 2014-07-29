@@ -12,6 +12,14 @@
 
 #import "ARNCustomURLHelper.h"
 
+@import MessageUI;
+
+@interface ARNCustomURLHelper () <MFMailComposeViewControllerDelegate>
+
+@property (nonatomic, copy) ARNCustomURLHelperFailureBlock failureBlock;
+
+@end
+
 @implementation ARNCustomURLHelper
 
 + (void)openCustomURLSchemeWithURL:(NSURL *)aURL failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
@@ -42,7 +50,10 @@
     [[self class] openCustomURLSchemeWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", phoneNumber]] failureBlock:failureBlock];
 }
 
-+ (void)sendEMailForSubject:(NSString *)subject body:(NSString *)body address:(NSString *)address failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
++ (void)sendEMailForSubject:(NSString *)subject
+                       body:(NSString *)body
+                    address:(NSString *)address
+               failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
 {
     NSMutableString *mString = [NSMutableString string];
     if (address) {
@@ -57,6 +68,61 @@
         [mString appendFormat:@"&body==%@", [[self class] escapeString:body]];
     }
     [[self class] openCustomURLSchemeWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@", mString]] failureBlock:failureBlock];
+}
+
+
+- (void)modalEMailForSubject:(NSString *)subject
+                        body:(NSString *)body
+                     address:(NSString *)address
+                       owner:(UIViewController *)owner
+                failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock
+{
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
+        [mailVC setSubject:subject];
+        [mailVC setToRecipients:@[address]];
+        [mailVC setMessageBody:body isHTML:NO];
+        mailVC.mailComposeDelegate = self;
+        self.failureBlock = failureBlock;
+        [owner presentViewController:mailVC animated:YES completion:nil];
+    } else {
+        if (failureBlock) {
+            failureBlock();
+        }
+    }
+}
+
+- ( void )mailComposeController:(MFMailComposeViewController *)controller
+            didFinishWithResult:(MFMailComposeResult)result
+                          error:(NSError *)error
+{
+    if(error) {
+        if (self.failureBlock) {
+            self.failureBlock();
+        }
+        
+    } else {
+        switch( result ) {
+            case MFMailComposeResultSent:
+                // メールを送信
+                break;
+            case MFMailComposeResultSaved:
+                // メールを保存
+                break;
+            case MFMailComposeResultCancelled:
+                // キャンセル
+                break;
+            case MFMailComposeResultFailed:
+                // 失敗
+                if (self.failureBlock) {
+                    self.failureBlock();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 // -----------------------------------------------------------------------------------------------------------------------//
