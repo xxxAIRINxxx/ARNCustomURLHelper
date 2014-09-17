@@ -60,12 +60,12 @@
         [mString appendString:address];
     }
     if (subject) {
-        [mString appendFormat:@"?subject=%@", [[self class] escapeString:subject]];
+        [mString appendFormat:@"?subject=%@", [subject stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     } else {
         [mString appendFormat:@"?subject="];
     }
     if (body) {
-        [mString appendFormat:@"&body==%@", [[self class] escapeString:body]];
+        [mString appendFormat:@"&body==%@", [body stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     [[self class] openCustomURLSchemeWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto:%@", mString]] failureBlock:failureBlock];
 }
