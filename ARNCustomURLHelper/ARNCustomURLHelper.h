@@ -27,6 +27,9 @@ typedef void (^ARNCustomURLHelperFailureBlock)();
                        owner:(UIViewController *)owner
                 failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock;
 
+- (void)setModaiEmailNavigationBarTintColor:(UIColor *)tintColor;
+- (void)setModalMailNavigationBarTitleTextAttributes:(NSDictionary *)attributes;
+
 // Line
 + (void)sendLineForText:(NSString *)testString failureBlock:(ARNCustomURLHelperFailureBlock)failureBlock;
 

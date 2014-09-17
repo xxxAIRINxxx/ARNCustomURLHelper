@@ -18,6 +18,9 @@
 
 @property (nonatomic, copy) ARNCustomURLHelperFailureBlock failureBlock;
 
+@property (nonatomic, copy) UIColor *mailBarTintColor;
+@property (nonatomic, copy) NSDictionary *mailBarTitleTextAttributes;
+
 @end
 
 @implementation ARNCustomURLHelper
@@ -84,6 +87,12 @@
         [mailVC setMessageBody:body isHTML:NO];
         mailVC.mailComposeDelegate = self;
         self.failureBlock = failureBlock;
+        if (self.mailBarTintColor) {
+            mailVC.navigationBar.tintColor = self.mailBarTintColor;
+        }
+        if (self.mailBarTitleTextAttributes) {
+            mailVC.navigationBar.titleTextAttributes = self.mailBarTitleTextAttributes;
+        }
         [owner presentViewController:mailVC animated:YES completion:nil];
     } else {
         if (failureBlock) {
@@ -123,6 +132,16 @@
         }
     }
     [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)setModaiEmailNavigationBarTintColor:(UIColor *)tintColor
+{
+    self.mailBarTintColor = tintColor;
+}
+
+- (void)setModalMailNavigationBarTitleTextAttributes:(NSDictionary *)attributes
+{
+    self.mailBarTitleTextAttributes = attributes;
 }
 
 // -----------------------------------------------------------------------------------------------------------------------//
