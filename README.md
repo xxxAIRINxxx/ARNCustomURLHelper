@@ -24,7 +24,7 @@ it, simply add the following line to your Podfile:
 
 ````
     pod "ARNCustomURLHelper"
-    ````
+````
 
 ## License
 
@@ -35,4 +35,3 @@ ARNCustomURLHelper is available under the MIT license. See the LICENSE file for 
 カスタムURLスキームによるアクセス用ヘルパーです。
 
 随時追加していく予定です。
-
