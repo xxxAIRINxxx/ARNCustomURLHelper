@@ -1,15 +1,8 @@
-
-# Ignore thumbnails created by windows
-Thumbs.db
-
-# Ignore python compiled files
-*.pyc
-
-# Ignore vim swaps
-*.swp
+# OS X
+.DS_Store
 
 # Xcode
-build/*
+build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -18,10 +11,22 @@ build/*
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-*.xcworkspace
-!default.xcworkspace
 xcuserdata
+*.xccheckout
 profile
 *.moved-aside
-.DS_Store
-._.*
+DerivedData
+*.hmap
+*.ipa
+
+# Bundler
+.bundle
+
+# We recommend against adding the Pods directory to your .gitignore. However
+# you should judge for yourself, the pros and cons are mentioned at:
+# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
+# 
+# Note: if you ignore the Pods directory, make sure to uncomment
+# `pod install` in .travis.yml
+#
+# Pods/
