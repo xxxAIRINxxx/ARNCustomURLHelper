@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 target 'ARNCustomURLHelper', :exclusive => true do
   pod "ARNCustomURLHelper", :path => "../"
 end
